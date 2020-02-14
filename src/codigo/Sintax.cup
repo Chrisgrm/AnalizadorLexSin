@@ -1,0 +1,88 @@
+package codigo;
+
+import java_cup.runtime.Symbol;
+
+parser code
+{:
+    private Symbol s;
+    
+    public void syntax_error(Symbol s){
+        this.s = s;
+    }
+
+    public Symbol getS(){
+        return this.s;
+}
+:};
+
+terminal Linea, Comillas, T_dato, Int, Cadena, If, Else, Do, While, For,
+    Igual, Suma, Resta, Multiplicacion, Division, Op_logico, Op_relacional,
+    Op_atribucion, Op_incremento, Op_booleano, Parentesis_a, Parentesis_c,
+    Llave_a, Llave_c, Corchete_a, Corchete_c, Main, P_coma, Identificador,
+    Numero, ERROR;
+non terminal INICIO, SENTENCIA, DECLARACION, DECLARACION_FOR, IF, IF_ELSE,
+    WHILE, DO_WHILE, FOR, SENTENCIA_BOOLEANA, SENTENCIA_FOR;
+
+start with INICIO;
+
+INICIO ::= 
+    Int Main Corchete_a Corchete_c SENTENCIA P_coma |
+    Main  Corchete_a Corchete_c   SENTENCIA P_coma
+;
+SENTENCIA ::= 
+    SENTENCIA DECLARACION |
+    DECLARACION |
+    SENTENCIA IF | 
+    IF |
+    SENTENCIA IF_ELSE |
+    IF_ELSE |
+    SENTENCIA WHILE |
+    WHILE |
+    SENTENCIA DO_WHILE
+    DO_WHILE |
+    SENTENCIA FOR |
+    FOR
+;
+DECLARACION ::= 
+    Llave_a Int Llave_c Identificador P_coma | 
+    Llave_a Int Llave_c Identificador Op_atribucion Numero P_coma |
+    Llave_a Int Llave_c Identificador Igual Numero P_coma |
+    Llave_a Int Llave_c Identificador Op_incremento P_coma | 
+    Llave_a Int Llave_c Op_incremento Identificador P_coma | 
+    Llave_a T_dato Llave_c Identificador P_coma | 
+    Llave_a T_dato Llave_c Identificador Op_atribucion Numero P_coma |
+    Llave_a T_dato Llave_c Identificador Igual Numero P_coma |
+    Llave_a T_dato Llave_c Identificador Op_incremento P_coma | 
+    Llave_a T_dato Llave_c Op_incremento Identificador P_coma | 
+    Cadena  Identificador Op_atribucion Comillas Comillas P_coma |
+    Cadena Identificador Igual Comillas Comillas P_coma |
+    Cadena Identificador Op_atribucion Comillas Identificador Comillas P_coma |
+    Cadena Identificador Igual Comillas Identificador Comillas P_coma
+;
+IF ::=  Corchete_a SENTENCIA_BOOLEANA Corchete_c If SENTENCIA P_coma
+;
+SENTENCIA_BOOLEANA ::= 
+    Op_booleano | 
+    Identificador Op_relacional Op_booleano |
+    Identificador Op_relacional Numero |
+    Identificador Op_relacional Identificador |
+    Identificador Op_relacional Comillas Comillas |
+    Identificador Op_relacional Comillas Identificador Comillas
+;
+IF_ELSE ::= Corchete_a SENTENCIA_BOOLEANA Corchete_c If SENTENCIA P_coma Else  SENTENCIA P_coma
+;
+WHILE ::= While Corchete_a SENTENCIA_BOOLEANA Corchete_c  SENTENCIA P_coma
+;
+DO_WHILE ::= Do P_coma
+;
+FOR ::= For Parentesis_a SENTENCIA_FOR Parentesis_c  SENTENCIA P_coma
+;
+SENTENCIA_FOR ::=
+    T_dato Identificador Igual Numero P_coma SENTENCIA_BOOLEANA P_coma DECLARACION_FOR |
+    Identificador Igual Numero P_coma SENTENCIA_BOOLEANA P_coma DECLARACION_FOR
+;
+DECLARACION_FOR ::= 
+    Identificador Op_atribucion Numero |
+    Identificador Op_incremento | 
+    Op_incremento Identificador
+;

@@ -1,0 +1,11 @@
+int main(){
+	int w=0;
+	for (x=1;y>0;x++){
+		if (y==0){
+		String t= "perro";
+		}else{
+		String h = "gato";
+		}
+	}
+
+}

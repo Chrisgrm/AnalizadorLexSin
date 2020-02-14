@@ -1,0 +1,15 @@
+INICIO[]
+ciclo(x=0. y<0. y++)
+Palabra y = $elfo$.
+.
+
+[x>0]seCumple?
+{int} y = 0.
+.
+noCumple
+{int} y = 0.
+.
+mientras[x>0]
+Palabra x = $perro$.
+.
+.
